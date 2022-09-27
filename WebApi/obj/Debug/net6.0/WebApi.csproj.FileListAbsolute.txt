@@ -36,3 +36,6 @@ C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0
 C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Miktat_Leptop\Documents\net_pratikler\Bookstore\WebApi\bin\Debug\net6.0\FluentValidation.dll

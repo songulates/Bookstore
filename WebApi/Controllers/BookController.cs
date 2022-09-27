@@ -1,8 +1,10 @@
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.BooksOperations.CreateBook;
 using WebApi.BooksOperations.DeleteBook;
@@ -25,10 +27,11 @@ namespace WebApi.Controllers
     {
         private readonly BookStrDbContext _context;//KONSTRACTIR aracılığıyla BookStrDbContext erişebilirz 
         //uygulama içerisinde değiştirilemesin diye readonly yaptık
-        public BookController(BookStrDbContext context)
+        private readonly IMapper _mapper;
+        public BookController(BookStrDbContext context,IMapper mapper)
         {
             _context = context; //private ı inject edilen instanca atadım
-            
+            _mapper=mapper;
         }
 
         [HttpGet]
@@ -36,7 +39,7 @@ namespace WebApi.Controllers
         public IActionResult GetBooks()
         {
             //GetBooksQuery query=new GetBooksQuery(_context);
-            GetBooksQuery query=new GetBooksQuery(_context);
+            GetBooksQuery query=new GetBooksQuery(_context,_mapper);
             var result= query.Handle();
             return Ok(result); 
 
@@ -48,7 +51,8 @@ namespace WebApi.Controllers
             BookDetailViewMOdel result;
             try
             {
-            GetBookDetailQuery query=new GetBookDetailQuery(_context);
+            GetBookDetailQuery query=new GetBookDetailQuery(_context,_mapper
+            );
             query.BookId=id;
             result=query.Handle();
             
@@ -75,11 +79,20 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Addbook([FromBody] CreateBookModel newbook)
         {
-             CreateBookComnd createBookComnd=new CreateBookComnd(_context);
+             CreateBookComnd createBookComnd=new CreateBookComnd(_context,_mapper);
             try
             {
+                createBookComnd.Model=newbook;//model maplandikten sonra hundle metdo çalışıyo
+                CreateBkCommandValidator validator=new CreateBkCommandValidator();
+                validator.ValidateAndThrow(createBookComnd);//result obje içinde fluent validationun bana sağladığı metdlar var  
                 createBookComnd.Handle();
-                createBookComnd.Model=newbook;
+                // if(result.IsValid)
+                //     foreach(var item in result.Errors)
+                
+                //         Console.WriteLine("özellik"+item.PropertyName+"-Error Message: "+item.ErrorMessage);
+                // else 
+                     
+               
             }
             catch (Exception ex)
             {
@@ -87,7 +100,6 @@ namespace WebApi.Controllers
                return BadRequest(ex.Message);
             }
            
-            
             return Ok();
         }
         
@@ -118,6 +130,8 @@ namespace WebApi.Controllers
             {
                 DeleteBookQuery query=new DeleteBookQuery(_context);
                 query.BookId=id;
+                DeleteBkCommandValidator validator=new DeleteBkCommandValidator();
+                validator.ValidateAndThrow(query);
                 query.Handle();
             }
             catch (Exception ex)

@@ -14,6 +14,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookStrDbContext>(options => options.UseInMemoryDatabase(databaseName : "BookStoreDB"));
 //UYGULAMA içinde kulanılan servislerin implemente edildiği yer database servis bizim için uygulama içinde kullanılması için inject edilmesi lazım
 //inmemory databse kullanıcaz buda bize entity framworkden geliyo uygulamamya contexi göstermiş olduk
+//obje dönüşüm konfigursyonarını bir yerde verirsek bundan sonra o iki obje arasında mapper.map metodu 
+//ile dönüşüm yapabilirsiniz mapping profile.cs dosası oluşturalm
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 
