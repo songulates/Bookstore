@@ -6,6 +6,8 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.BksOperations.GetBookDetail;
+using WebApi.BksOperations.UpdateBook;
 using WebApi.BooksOperations.CreateBook;
 using WebApi.BooksOperations.DeleteBook;
 using WebApi.BooksOperations.GetBookDetail;
@@ -54,6 +56,8 @@ namespace WebApi.Controllers
             GetBookDetailQuery query=new GetBookDetailQuery(_context,_mapper
             );
             query.BookId=id;
+            GetBkDetailValidator validator=new GetBkDetailValidator();
+            validator.ValidateAndThrow(query);
             result=query.Handle();
             
             }
@@ -112,6 +116,8 @@ namespace WebApi.Controllers
             UpdateBookCommand command=new UpdateBookCommand(_context);
             command.BookId=id;
             command.Model=Updatedbook;
+            UpdateBookValidator validator=new UpdateBookValidator();
+            validator.ValidateAndThrow(command);
             command.Handle();
              
             }
